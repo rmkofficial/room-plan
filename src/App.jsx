@@ -22,7 +22,6 @@ const App = () => {
         }}
       >
         {selectedRoom && <RoomDetails selectedRoom={selectedRoom} />}
-        {/* Diğer bölümler buraya gelecek */}
       </Box>
     </Box>
   );
