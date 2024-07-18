@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useState } from "react";
 import {
   FormControl,
@@ -13,7 +14,7 @@ import {
 } from "@mui/material";
 import { categoryNamesBlokKatMap } from "../data";
 
-const Sidebar = () => {
+const Sidebar = ({ onRoomSelect }) => {
   const [selectedBlock, setSelectedBlock] = useState("");
   const [selectedFloor, setSelectedFloor] = useState("");
 
@@ -58,6 +59,9 @@ const Sidebar = () => {
             value={selectedBlock}
             onChange={handleBlockChange}
           >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
             {blocks.map((block) => (
               <MenuItem key={block} value={block}>
                 {block}
@@ -73,6 +77,9 @@ const Sidebar = () => {
             value={selectedFloor}
             onChange={handleFloorChange}
           >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
             {floors.map((floor) => (
               <MenuItem key={floor} value={floor}>
                 {floor}
@@ -93,7 +100,11 @@ const Sidebar = () => {
                 <ListItemIcon>
                   <Checkbox edge="start" />
                 </ListItemIcon>
-                <ListItemText primary={room} sx={{ cursor: "pointer" }} />
+                <ListItemText
+                  primary={room}
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => onRoomSelect(room)}
+                />
               </ListItem>
             ))}
           </List>
@@ -101,6 +112,10 @@ const Sidebar = () => {
       )}
     </Box>
   );
+};
+
+Sidebar.propTypes = {
+  onRoomSelect: PropTypes.func.isRequired,
 };
 
 export default Sidebar;
