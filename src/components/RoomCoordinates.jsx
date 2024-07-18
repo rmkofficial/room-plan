@@ -1,13 +1,27 @@
 import PropTypes from "prop-types";
-import { Box, Typography, TextField } from "@mui/material";
+import { useState } from "react";
+import { Box, Typography, TextField, Pagination } from "@mui/material";
 
 const RoomCoordinates = ({ coordinates, onCoordinateChange }) => {
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(coordinates.length / itemsPerPage);
+
   const handleInputChange = (index, field, value) => {
     if (field === "address" && isNaN(value)) {
-      return; // Sadece sayısal değerleri kabul et
+      return;
     }
     onCoordinateChange(index, field, value);
   };
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  const displayedCoordinates = coordinates.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
 
   return (
     <Box
@@ -36,7 +50,7 @@ const RoomCoordinates = ({ coordinates, onCoordinateChange }) => {
           Address
         </Typography>
       </Box>
-      {coordinates.map((coord, index) => (
+      {displayedCoordinates.map((coord, index) => (
         <Box
           key={index}
           sx={{
@@ -47,7 +61,13 @@ const RoomCoordinates = ({ coordinates, onCoordinateChange }) => {
         >
           <TextField
             value={coord.x}
-            onChange={(e) => handleInputChange(index, "x", e.target.value)}
+            onChange={(e) =>
+              handleInputChange(
+                index + (page - 1) * itemsPerPage,
+                "x",
+                e.target.value
+              )
+            }
             size="small"
             sx={{
               width: "30%",
@@ -56,7 +76,13 @@ const RoomCoordinates = ({ coordinates, onCoordinateChange }) => {
           />
           <TextField
             value={coord.y}
-            onChange={(e) => handleInputChange(index, "y", e.target.value)}
+            onChange={(e) =>
+              handleInputChange(
+                index + (page - 1) * itemsPerPage,
+                "y",
+                e.target.value
+              )
+            }
             size="small"
             sx={{
               width: "30%",
@@ -66,18 +92,30 @@ const RoomCoordinates = ({ coordinates, onCoordinateChange }) => {
           <TextField
             value={coord.address}
             onChange={(e) =>
-              handleInputChange(index, "address", e.target.value)
+              handleInputChange(
+                index + (page - 1) * itemsPerPage,
+                "address",
+                e.target.value
+              )
             }
             size="small"
             sx={{
               width: "30%",
               "& .MuiInputBase-input": { color: coord.color },
             }}
-            error={isNaN(coord.address)} // Sayısal olmayan değerler için hata göstermek
+            error={isNaN(coord.address)} 
             helperText={isNaN(coord.address) ? "Only numbers are allowed" : ""}
           />
         </Box>
       ))}
+      {totalPages > 1 && (
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={handlePageChange}
+          sx={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
+        />
+      )}
     </Box>
   );
 };
