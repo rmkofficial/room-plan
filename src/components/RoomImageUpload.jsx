@@ -1,29 +1,12 @@
 import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
 
-const RoomImageUpload = ({ imageSrc }) => {
-  const [clickCoordinates, setClickCoordinates] = useState([]);
-
-  const colors = [
-    "red",
-    "blue",
-    "green",
-    "orange",
-    "purple",
-    "pink",
-    "yellow",
-    "cyan",
-    "magenta",
-  ];
-
+const RoomImageUpload = ({ imageSrc, coordinates, onImageClick }) => {
   const handleImageClick = (event) => {
     const rect = event.target.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    const color = colors[clickCoordinates.length % colors.length]; 
-    setClickCoordinates((prevCoords) => [...prevCoords, { x, y, color }]);
-    console.log(`Clicked coordinates: X=${x}, Y=${y}, Color=${color}`);
+    onImageClick(x, y);
   };
 
   return (
@@ -50,7 +33,7 @@ const RoomImageUpload = ({ imageSrc }) => {
           No Image Uploaded
         </Typography>
       )}
-      {clickCoordinates.map((coord, index) => (
+      {coordinates.map((coord, index) => (
         <Box
           key={index}
           sx={{
@@ -71,6 +54,15 @@ const RoomImageUpload = ({ imageSrc }) => {
 
 RoomImageUpload.propTypes = {
   imageSrc: PropTypes.string,
+  coordinates: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.number.isRequired,
+      y: PropTypes.number.isRequired,
+      address: PropTypes.string,
+      color: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  onImageClick: PropTypes.func.isRequired,
 };
 
 export default RoomImageUpload;

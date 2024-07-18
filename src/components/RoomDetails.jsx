@@ -1,15 +1,70 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Snackbar, Alert } from "@mui/material";
 import RoomDetailsHeader from "./RoomDetailsHeader";
 import RoomCoordinates from "./RoomCoordinates";
 import RoomImageUpload from "./RoomImageUpload";
 
 const RoomDetails = ({ selectedRoom }) => {
   const [imageSrc, setImageSrc] = useState(null);
+  const [coordinates, setCoordinates] = useState([]);
+  const [error, setError] = useState(null);
 
   const handleImageUpload = (src) => {
     setImageSrc(src);
+  };
+
+  const handleImageClick = (x, y) => {
+    const colors = [
+      "red",
+      "blue",
+      "green",
+      "orange",
+      "purple",
+      "pink",
+      "yellow",
+      "cyan",
+      "magenta",
+    ];
+    const color = colors[coordinates.length % colors.length];
+    setCoordinates((prevCoords) => [
+      ...prevCoords,
+      { x, y, address: "", color },
+    ]);
+  };
+
+  const handleCoordinateChange = (index, field, value) => {
+    setCoordinates((prevCoords) => {
+      const newCoords = [...prevCoords];
+      newCoords[index][field] =
+        field === "x" || field === "y" ? parseFloat(value) : value;
+      return newCoords;
+    });
+  };
+
+  const handleSave = () => {
+    if (
+      !selectedRoom ||
+      coordinates.some(
+        (coord) =>
+          !coord.x || !coord.y || !coord.address || isNaN(coord.address)
+      )
+    ) {
+      setError("Please fill in all fields correctly.");
+      return;
+    }
+
+    const data = {
+      room: selectedRoom,
+      coordinates: coordinates.map((coord) => ({
+        x: coord.x,
+        y: coord.y,
+        address: coord.address,
+      })),
+    };
+
+    console.log(JSON.stringify(data, null, 2));
+    setError(null);
   };
 
   return (
@@ -24,17 +79,38 @@ const RoomDetails = ({ selectedRoom }) => {
       <RoomDetailsHeader
         selectedRoom={selectedRoom}
         onImageUpload={handleImageUpload}
+        onSave={handleSave}
       />
       <Box
         sx={{ display: "flex", justifyContent: "space-between", gap: "40px" }}
       >
         <Box sx={{ flex: 1 }}>
-          <RoomCoordinates />
+          <RoomCoordinates
+            coordinates={coordinates}
+            onCoordinateChange={handleCoordinateChange}
+          />
         </Box>
         <Box sx={{ flex: 1 }}>
-          <RoomImageUpload imageSrc={imageSrc} />
+          <RoomImageUpload
+            imageSrc={imageSrc}
+            coordinates={coordinates}
+            onImageClick={handleImageClick}
+          />
         </Box>
       </Box>
+      <Snackbar
+        open={!!error}
+        autoHideDuration={6000}
+        onClose={() => setError(null)}
+      >
+        <Alert
+          onClose={() => setError(null)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

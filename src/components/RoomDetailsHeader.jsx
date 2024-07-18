@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { green } from "@mui/material/colors";
 
-const RoomDetailsHeader = ({ selectedRoom, onImageUpload }) => {
+const RoomDetailsHeader = ({ selectedRoom, onImageUpload, onSave }) => {
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -85,6 +85,7 @@ const RoomDetailsHeader = ({ selectedRoom, onImageUpload }) => {
             marginRight: "30px",
             "&:hover": { backgroundColor: green[700] },
           }}
+          onClick={onSave}
         >
           Save
         </Button>
@@ -96,6 +97,7 @@ const RoomDetailsHeader = ({ selectedRoom, onImageUpload }) => {
 RoomDetailsHeader.propTypes = {
   selectedRoom: PropTypes.string.isRequired,
   onImageUpload: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 export default RoomDetailsHeader;
