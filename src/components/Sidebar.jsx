@@ -1,6 +1,40 @@
-import { FormControl, InputLabel, Select, MenuItem, Box } from "@mui/material";
+import { useState } from "react";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Checkbox,
+} from "@mui/material";
+import { categoryNamesBlokKatMap } from "../data";
 
 const Sidebar = () => {
+  const [selectedBlock, setSelectedBlock] = useState("");
+  const [selectedFloor, setSelectedFloor] = useState("");
+
+  const handleBlockChange = (event) => {
+    setSelectedBlock(event.target.value);
+    setSelectedFloor(""); 
+  };
+
+  const handleFloorChange = (event) => {
+    setSelectedFloor(event.target.value);
+  };
+
+  const blocks = Object.keys(categoryNamesBlokKatMap);
+  const floors = selectedBlock
+    ? Object.keys(categoryNamesBlokKatMap[selectedBlock])
+    : [];
+  const rooms =
+    selectedBlock && selectedFloor
+      ? categoryNamesBlokKatMap[selectedBlock][selectedFloor]
+      : [];
+
   return (
     <Box
       sx={{
@@ -18,21 +52,53 @@ const Sidebar = () => {
       >
         <FormControl fullWidth>
           <InputLabel id="block-select-label">Block</InputLabel>
-          <Select labelId="block-select-label" id="block-select">
-            <MenuItem value={1}>Block 1</MenuItem>
-            <MenuItem value={2}>Block 2</MenuItem>
-            <MenuItem value={3}>Block 3</MenuItem>
+          <Select
+            labelId="block-select-label"
+            id="block-select"
+            value={selectedBlock}
+            onChange={handleBlockChange}
+          >
+            {blocks.map((block) => (
+              <MenuItem key={block} value={block}>
+                {block}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
-        <FormControl fullWidth>
+        <FormControl fullWidth disabled={!selectedBlock}>
           <InputLabel id="floor-select-label">Floor</InputLabel>
-          <Select labelId="floor-select-label" id="floor-select">
-            <MenuItem value={1}>Floor 1</MenuItem>
-            <MenuItem value={2}>Floor 2</MenuItem>
-            <MenuItem value={3}>Floor 3</MenuItem>
+          <Select
+            labelId="floor-select-label"
+            id="floor-select"
+            value={selectedFloor}
+            onChange={handleFloorChange}
+          >
+            {floors.map((floor) => (
+              <MenuItem key={floor} value={floor}>
+                {floor}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Box>
+      {rooms.length > 0 && (
+        <Box sx={{ marginTop: "10px" }}>
+          <strong>Rooms:</strong>
+          <List>
+            {rooms.map((room) => (
+              <ListItem
+                key={room}
+                sx={{ "&:hover": { backgroundColor: "#f5f5f5" } }}
+              >
+                <ListItemIcon>
+                  <Checkbox edge="start" />
+                </ListItemIcon>
+                <ListItemText primary={room} sx={{ cursor: "pointer" }} />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      )}
     </Box>
   );
 };
