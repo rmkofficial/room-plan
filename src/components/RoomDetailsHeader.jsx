@@ -10,7 +10,18 @@ import {
 } from "@mui/material";
 import { green } from "@mui/material/colors";
 
-const RoomDetailsHeader = ({ selectedRoom }) => {
+const RoomDetailsHeader = ({ selectedRoom, onImageUpload }) => {
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        onImageUpload(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -35,7 +46,12 @@ const RoomDetailsHeader = ({ selectedRoom }) => {
           sx={{ flexShrink: 0, width: "250px" }}
         >
           Upload Room Plan (PNG)
-          <input type="file" hidden accept=".png" />
+          <input
+            type="file"
+            hidden
+            accept=".png"
+            onChange={handleImageUpload}
+          />
         </Button>
         <Button
           variant="contained"
@@ -79,6 +95,7 @@ const RoomDetailsHeader = ({ selectedRoom }) => {
 
 RoomDetailsHeader.propTypes = {
   selectedRoom: PropTypes.string.isRequired,
+  onImageUpload: PropTypes.func.isRequired,
 };
 
 export default RoomDetailsHeader;
