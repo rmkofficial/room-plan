@@ -47,18 +47,14 @@ const Sidebar = ({ onRoomSelect }) => {
   return (
     <Box
       sx={{
-        width: "25%",
+        width: "300px",
         padding: "10px",
         boxSizing: "border-box",
         border: "1px solid #ccc",
+        flexShrink: 0,
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          gap: "10px",
-        }}
-      >
+      <Box sx={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
         <FormControl fullWidth>
           <InputLabel id="block-select-label">Block</InputLabel>
           <Select
@@ -91,7 +87,7 @@ const Sidebar = ({ onRoomSelect }) => {
         </FormControl>
       </Box>
       {rooms.length > 0 && (
-        <Box sx={{ marginTop: "10px" }}>
+        <Box>
           <strong>Rooms:</strong>
           <List>
             {rooms.map((room) => (

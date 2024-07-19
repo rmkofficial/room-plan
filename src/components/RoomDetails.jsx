@@ -11,27 +11,31 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
   const [selectedPointIndex, setSelectedPointIndex] = useState(null);
   const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    // Yeni bir oda seçildiğinde veya yeni bir PNG yüklendiğinde verileri sıfırla
     setImageSrc(null);
     setCoordinates([]);
     setSelectedPointIndex(null);
     setImgDimensions({ width: 0, height: 0 });
+    setCurrentPage(1);
   }, [selectedRoom]);
 
   const handleImageUpload = (src) => {
     setImageSrc(src);
-    setCoordinates([]); // Yeni bir PNG yüklendiğinde koordinatları sıfırla
+    setCoordinates([]);
     setSelectedPointIndex(null);
+    setCurrentPage(1);
   };
 
   const handleImageClick = (x, y) => {
-    const color = "red"; // Tüm noktalar aynı renkte
+    const color = "red";
+    const roundedX = parseFloat(x.toFixed(2));
+    const roundedY = parseFloat(y.toFixed(2));
     setCoordinates((prevCoords) => [
       ...prevCoords,
-      { x, y, address: "", color },
+      { x: roundedX, y: roundedY, address: "", color },
     ]);
   };
 
@@ -70,7 +74,6 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
       return;
     }
 
-    // PNG dosyasını sadece yüklendiği haliyle oluştur
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const img = new Image();
@@ -88,6 +91,13 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
 
     setError(null);
   };
+
+  const itemsPerPage = 20;
+  const totalPages = Math.ceil(coordinates.length / itemsPerPage);
+  const currentCoordinates = coordinates.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <Box
@@ -111,15 +121,38 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
           alignItems: "flex-start",
         }}
       >
-        <Box sx={{ width: "300px", padding: "10px" }}>
-          {" "}
-          {/* Soldaki componentin genişliği statik ve padding ekli */}
+        <Box sx={{ width: "300px", padding: "10px", flexShrink: 0 }}>
           <RoomCoordinates
-            coordinates={coordinates}
+            coordinates={currentCoordinates}
             onCoordinateChange={handleCoordinateChange}
             selectedPointIndex={selectedPointIndex}
             onRowClick={handlePointSelect}
           />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "10px",
+            }}
+          >
+            {Array.from({ length: totalPages }, (_, index) => (
+              <Box
+                key={index}
+                onClick={() => setCurrentPage(index + 1)}
+                sx={{
+                  cursor: "pointer",
+                  padding: "5px 10px",
+                  margin: "0 5px",
+                  backgroundColor:
+                    currentPage === index + 1 ? "lightblue" : "white",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                }}
+              >
+                {index + 1}
+              </Box>
+            ))}
+          </Box>
         </Box>
         <Box
           sx={{
@@ -130,8 +163,6 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
             height: imgDimensions.height,
           }}
         >
-          {" "}
-          {/* Sağdaki componentin boyutunu dinamik yap ve padding ekli */}
           <RoomImageUpload
             imageSrc={imageSrc}
             coordinates={coordinates}

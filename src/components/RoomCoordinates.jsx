@@ -13,7 +13,7 @@ const RoomCoordinates = ({
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          padding: "10px",
+          padding: "5px",
           backgroundColor: "#f5f5f5",
           fontWeight: "bold",
         }}
@@ -29,7 +29,7 @@ const RoomCoordinates = ({
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            padding: "10px",
+            padding: "5px",
             backgroundColor:
               selectedPointIndex === index ? "lightblue" : "transparent",
             cursor: "pointer",
@@ -40,16 +40,16 @@ const RoomCoordinates = ({
             onChange={(e) => onCoordinateChange(index, "x", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "30%", color: "black" }}
-            InputProps={{ readOnly: true }}
+            sx={{ width: "30%", margin: "2px" }}
+            InputProps={{ style: { fontSize: 12 } }}
           />
           <TextField
             value={coord.y}
             onChange={(e) => onCoordinateChange(index, "y", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "30%", color: "black" }}
-            InputProps={{ readOnly: true }}
+            sx={{ width: "30%", margin: "2px" }}
+            InputProps={{ style: { fontSize: 12 } }}
           />
           <TextField
             value={coord.address}
@@ -58,7 +58,8 @@ const RoomCoordinates = ({
             }
             variant="outlined"
             size="small"
-            sx={{ width: "30%", color: "black" }}
+            sx={{ width: "30%", margin: "2px" }}
+            InputProps={{ style: { fontSize: 12 } }}
           />
         </Box>
       ))}
