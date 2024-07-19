@@ -14,6 +14,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
+    // Yeni bir oda seçildiğinde veya yeni bir PNG yüklendiğinde verileri sıfırla
     setImageSrc(null);
     setCoordinates([]);
     setSelectedPointIndex(null);
@@ -22,12 +23,12 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
 
   const handleImageUpload = (src) => {
     setImageSrc(src);
-    setCoordinates([]); 
+    setCoordinates([]); // Yeni bir PNG yüklendiğinde koordinatları sıfırla
     setSelectedPointIndex(null);
   };
 
   const handleImageClick = (x, y) => {
-    const color = "red"; 
+    const color = "red"; // Tüm noktalar aynı renkte
     setCoordinates((prevCoords) => [
       ...prevCoords,
       { x, y, address: "", color },
@@ -69,7 +70,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
       return;
     }
 
-    
+    // PNG dosyasını sadece yüklendiği haliyle oluştur
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const img = new Image();
@@ -78,12 +79,6 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
-      coordinates.forEach((coord) => {
-        ctx.fillStyle = coord.color;
-        ctx.beginPath();
-        ctx.arc(coord.x, coord.y, 5, 0, 2 * Math.PI);
-        ctx.fill();
-      });
       const dataUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.download = `blok_${block}_kat_${floor}_oda_${selectedRoom}.png`;
@@ -118,7 +113,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
       >
         <Box sx={{ width: "300px", padding: "10px" }}>
           {" "}
-          
+          {/* Soldaki componentin genişliği statik ve padding ekli */}
           <RoomCoordinates
             coordinates={coordinates}
             onCoordinateChange={handleCoordinateChange}
@@ -136,7 +131,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
           }}
         >
           {" "}
-          
+          {/* Sağdaki componentin boyutunu dinamik yap ve padding ekli */}
           <RoomImageUpload
             imageSrc={imageSrc}
             coordinates={coordinates}
