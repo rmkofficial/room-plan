@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -11,12 +12,15 @@ import {
 import { green } from "@mui/material/colors";
 
 const RoomDetailsHeader = ({ selectedRoom, onImageUpload, onSave }) => {
+  const [inputKey, setInputKey] = useState(Date.now());
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
         onImageUpload(e.target.result);
+        setInputKey(Date.now());
       };
       reader.readAsDataURL(file);
     }
@@ -47,6 +51,7 @@ const RoomDetailsHeader = ({ selectedRoom, onImageUpload, onSave }) => {
         >
           Upload Room Plan (PNG)
           <input
+            key={inputKey}
             type="file"
             hidden
             accept=".png"

@@ -27,7 +27,7 @@ const Sidebar = ({ onRoomSelect }) => {
     setSelectedFloor(initialFloor);
     setSelectedRoom(initialRoom);
     onRoomSelect(initialBlock, initialFloor, initialRoom);
-  }, []);
+  }, [onRoomSelect]);
 
   const handleBlockChange = (event) => {
     const newBlock = event.target.value;

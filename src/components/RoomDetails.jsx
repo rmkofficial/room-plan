@@ -6,7 +6,7 @@ import RoomCoordinates from "./RoomCoordinates";
 import RoomImageUpload from "./RoomImageUpload";
 
 const RoomDetails = ({ selectedRoom, block, floor }) => {
-  const [imageSrc, setImageSrc] = useState(null);
+  const [roomImageMap, setRoomImageMap] = useState({});
   const [coordinates, setCoordinates] = useState([]);
   const [selectedPointIndex, setSelectedPointIndex] = useState(null);
   const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
@@ -15,18 +15,30 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    setImageSrc(null);
-    setCoordinates([]);
-    setSelectedPointIndex(null);
-    setImgDimensions({ width: 0, height: 0 });
-    setCurrentPage(1);
-  }, [selectedRoom]);
+    if (roomImageMap[selectedRoom]) {
+      setCoordinates(roomImageMap[selectedRoom].coordinates);
+      setImgDimensions(roomImageMap[selectedRoom].imgDimensions);
+      setCurrentPage(roomImageMap[selectedRoom].currentPage);
+      setSelectedPointIndex(null);
+    } else {
+      setCoordinates([]);
+      setImgDimensions({ width: 0, height: 0 });
+      setCurrentPage(1);
+      setSelectedPointIndex(null);
+    }
+  }, [selectedRoom, roomImageMap]);
 
   const handleImageUpload = (src) => {
-    setImageSrc(src);
-    setCoordinates([]);
-    setSelectedPointIndex(null);
-    setCurrentPage(1);
+    const updatedRoomImageMap = {
+      ...roomImageMap,
+      [selectedRoom]: {
+        imageSrc: src,
+        coordinates: [],
+        imgDimensions: { width: 0, height: 0 },
+        currentPage: 1,
+      },
+    };
+    setRoomImageMap(updatedRoomImageMap);
   };
 
   const handleImageClick = (x, y) => {
@@ -81,7 +93,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const img = new Image();
-    img.src = imageSrc;
+    img.src = roomImageMap[selectedRoom].imageSrc;
     img.onload = () => {
       canvas.width = img.width;
       canvas.height = img.height;
@@ -92,6 +104,17 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
       link.href = dataUrl;
       link.click();
     };
+
+    const updatedRoomImageMap = {
+      ...roomImageMap,
+      [selectedRoom]: {
+        ...roomImageMap[selectedRoom],
+        coordinates,
+        imgDimensions,
+        currentPage,
+      },
+    };
+    setRoomImageMap(updatedRoomImageMap);
 
     setError(null);
   };
@@ -169,7 +192,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
           }}
         >
           <RoomImageUpload
-            imageSrc={imageSrc}
+            imageSrc={roomImageMap[selectedRoom]?.imageSrc}
             coordinates={coordinates}
             onImageClick={handleImageClick}
             onImageLoad={handleImageLoad}

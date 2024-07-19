@@ -19,9 +19,16 @@ const RoomCoordinates = ({
           fontWeight: "bold",
         }}
       >
-        <Typography>Koordinat X</Typography>
-        <Typography>Koordinat Y</Typography>
-        <Typography>Address</Typography>
+        <Typography sx={{ width: "20%", textAlign: "center" }}>
+          Koordinat X
+        </Typography>
+        <Typography sx={{ width: "20%", textAlign: "center" }}>
+          Koordinat Y
+        </Typography>
+        <Typography sx={{ width: "20%", textAlign: "center" }}>
+          Address
+        </Typography>
+        <Typography sx={{ width: "20%", textAlign: "center" }}></Typography>
       </Box>
       {coordinates.map((coord, index) => (
         <Box
@@ -42,7 +49,7 @@ const RoomCoordinates = ({
             variant="outlined"
             size="small"
             sx={{ width: "20%", margin: "2px" }}
-            InputProps={{ style: { fontSize: 12 } }}
+            InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
             value={coord.y}
@@ -50,7 +57,7 @@ const RoomCoordinates = ({
             variant="outlined"
             size="small"
             sx={{ width: "20%", margin: "2px" }}
-            InputProps={{ style: { fontSize: 12 } }}
+            InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
             value={coord.address}
@@ -60,7 +67,7 @@ const RoomCoordinates = ({
             variant="outlined"
             size="small"
             sx={{ width: "20%", margin: "2px" }}
-            InputProps={{ style: { fontSize: 12 } }}
+            InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <Button
             variant="contained"
@@ -69,7 +76,7 @@ const RoomCoordinates = ({
               e.stopPropagation();
               onCoordinateDelete(index);
             }}
-            sx={{ margin: "2px" }}
+            sx={{ width: "20%", margin: "2px" }}
           >
             Delete
           </Button>
