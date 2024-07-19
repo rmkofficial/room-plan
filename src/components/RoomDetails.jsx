@@ -98,11 +98,27 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
+
       const dataUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.download = `blok_${block}_kat_${floor}_oda_${selectedRoom}.png`;
       link.href = dataUrl;
       link.click();
+
+      // Koordinatları içeren bir txt dosyası oluştur
+      const coordinatesText = coordinates
+        .map(
+          (coord) => `X: ${coord.x}, Y: ${coord.y}, Address: ${coord.address}`
+        )
+        .join("\n");
+
+      const txtBlob = new Blob([coordinatesText], { type: "text/plain" });
+      const txtUrl = URL.createObjectURL(txtBlob);
+      const txtLink = document.createElement("a");
+      txtLink.download = `blok_${block}_kat_${floor}_oda_${selectedRoom}.txt`;
+      txtLink.href = txtUrl;
+      txtLink.click();
+      URL.revokeObjectURL(txtUrl);
     };
 
     const updatedRoomImageMap = {

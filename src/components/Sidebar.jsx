@@ -27,7 +27,8 @@ const Sidebar = ({ onRoomSelect }) => {
     setSelectedFloor(initialFloor);
     setSelectedRoom(initialRoom);
     onRoomSelect(initialBlock, initialFloor, initialRoom);
-  }, [onRoomSelect]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleBlockChange = (event) => {
     const newBlock = event.target.value;
