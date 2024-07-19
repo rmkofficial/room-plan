@@ -8,6 +8,7 @@ import RoomImageUpload from "./RoomImageUpload";
 const RoomDetails = ({ selectedRoom, block, floor }) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
+  const [selectedPointIndex, setSelectedPointIndex] = useState(null);
   const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
   const [error, setError] = useState(null);
   const canvasRef = useRef(null);
@@ -15,28 +16,18 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
   useEffect(() => {
     setImageSrc(null);
     setCoordinates([]);
+    setSelectedPointIndex(null);
     setImgDimensions({ width: 0, height: 0 });
   }, [selectedRoom]);
 
   const handleImageUpload = (src) => {
     setImageSrc(src);
-    setCoordinates([]);
-    setImgDimensions({ width: 0, height: 0 });
+    setCoordinates([]); 
+    setSelectedPointIndex(null);
   };
 
   const handleImageClick = (x, y) => {
-    const colors = [
-      "red",
-      "blue",
-      "green",
-      "orange",
-      "purple",
-      "pink",
-      "yellow",
-      "cyan",
-      "magenta",
-    ];
-    const color = colors[coordinates.length % colors.length];
+    const color = "red"; 
     setCoordinates((prevCoords) => [
       ...prevCoords,
       { x, y, address: "", color },
@@ -54,6 +45,10 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
         field === "x" || field === "y" ? parseFloat(value) : value;
       return newCoords;
     });
+  };
+
+  const handlePointSelect = (index) => {
+    setSelectedPointIndex(index);
   };
 
   const handleSave = () => {
@@ -74,6 +69,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
       return;
     }
 
+    
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const img = new Image();
@@ -120,11 +116,14 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
           alignItems: "flex-start",
         }}
       >
-        <Box sx={{ width: "400px", paddingRight: 10 }}>
+        <Box sx={{ width: "300px", padding: "10px" }}>
           {" "}
+          
           <RoomCoordinates
             coordinates={coordinates}
             onCoordinateChange={handleCoordinateChange}
+            selectedPointIndex={selectedPointIndex}
+            onRowClick={handlePointSelect}
           />
         </Box>
         <Box
@@ -137,11 +136,13 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
           }}
         >
           {" "}
+          
           <RoomImageUpload
             imageSrc={imageSrc}
             coordinates={coordinates}
             onImageClick={handleImageClick}
             onImageLoad={handleImageLoad}
+            onPointClick={handlePointSelect}
           />
           <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </Box>

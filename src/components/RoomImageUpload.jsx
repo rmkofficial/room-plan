@@ -7,6 +7,7 @@ const RoomImageUpload = ({
   coordinates,
   onImageClick,
   onImageLoad,
+  onPointClick,
 }) => {
   const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
 
@@ -64,10 +65,12 @@ const RoomImageUpload = ({
             left: `${coord.x}px`,
             width: "10px",
             height: "10px",
-            backgroundColor: coord.color,
+            backgroundColor: "red",
             borderRadius: "50%",
             transform: "translate(-50%, -50%)",
+            cursor: "pointer",
           }}
+          onClick={() => onPointClick(index)}
         />
       ))}
     </Box>
@@ -80,12 +83,13 @@ RoomImageUpload.propTypes = {
     PropTypes.shape({
       x: PropTypes.number.isRequired,
       y: PropTypes.number.isRequired,
-      address: PropTypes.string,
+      address: PropTypes.string.isRequired,
       color: PropTypes.string.isRequired,
     })
   ).isRequired,
   onImageClick: PropTypes.func.isRequired,
   onImageLoad: PropTypes.func.isRequired,
+  onPointClick: PropTypes.func.isRequired,
 };
 
 export default RoomImageUpload;
