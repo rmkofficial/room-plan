@@ -1,7 +1,15 @@
 import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
+import { useState, useEffect, useCallback } from "react";
 
-const RoomImageUpload = ({ imageSrc, coordinates, onImageClick }) => {
+const RoomImageUpload = ({
+  imageSrc,
+  coordinates,
+  onImageClick,
+  onImageLoad,
+}) => {
+  const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
+
   const handleImageClick = (event) => {
     const rect = event.target.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -9,16 +17,33 @@ const RoomImageUpload = ({ imageSrc, coordinates, onImageClick }) => {
     onImageClick(x, y);
   };
 
+  const handleImageLoad = useCallback(
+    (event) => {
+      const { width, height } = event.target;
+      setImgDimensions({ width, height });
+      onImageLoad({ width, height });
+    },
+    [onImageLoad]
+  );
+
+  useEffect(() => {
+    if (imageSrc) {
+      const img = new Image();
+      img.src = imageSrc;
+      img.onload = handleImageLoad;
+    }
+  }, [imageSrc, handleImageLoad]);
+
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "100%",
         position: "relative",
         border: "1px solid #ccc",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        width: imgDimensions.width,
+        height: imgDimensions.height,
       }}
     >
       {imageSrc ? (
@@ -27,6 +52,7 @@ const RoomImageUpload = ({ imageSrc, coordinates, onImageClick }) => {
           alt="Uploaded Room Plan"
           style={{ maxWidth: "100%", maxHeight: "100%", cursor: "crosshair" }}
           onClick={handleImageClick}
+          onLoad={handleImageLoad}
         />
       ) : (
         <Typography variant="body1" color="textSecondary">
@@ -38,8 +64,8 @@ const RoomImageUpload = ({ imageSrc, coordinates, onImageClick }) => {
           key={index}
           sx={{
             position: "absolute",
-            top: `${coord.y - 5}px`,
-            left: `${coord.x - 5}px`,
+            top: `${coord.y}px`,
+            left: `${coord.x}px`,
             width: "10px",
             height: "10px",
             backgroundColor: coord.color,
@@ -63,6 +89,7 @@ RoomImageUpload.propTypes = {
     })
   ).isRequired,
   onImageClick: PropTypes.func.isRequired,
+  onImageLoad: PropTypes.func.isRequired,
 };
 
 export default RoomImageUpload;

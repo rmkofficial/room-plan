@@ -4,7 +4,7 @@ import { Box, Typography, TextField, Pagination } from "@mui/material";
 
 const RoomCoordinates = ({ coordinates, onCoordinateChange }) => {
   const [page, setPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 20;
   const totalPages = Math.ceil(coordinates.length / itemsPerPage);
 
   const handleInputChange = (index, field, value) => {

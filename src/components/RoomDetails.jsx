@@ -8,6 +8,7 @@ import RoomImageUpload from "./RoomImageUpload";
 const RoomDetails = ({ selectedRoom }) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
+  const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
   const [error, setError] = useState(null);
 
   const handleImageUpload = (src) => {
@@ -33,6 +34,10 @@ const RoomDetails = ({ selectedRoom }) => {
     ]);
   };
 
+  const handleImageLoad = ({ width, height }) => {
+    setImgDimensions({ width, height });
+  };
+
   const handleCoordinateChange = (index, field, value) => {
     setCoordinates((prevCoords) => {
       const newCoords = [...prevCoords];
@@ -47,10 +52,16 @@ const RoomDetails = ({ selectedRoom }) => {
       !selectedRoom ||
       coordinates.some(
         (coord) =>
-          !coord.x || !coord.y || !coord.address || isNaN(coord.address)
+          !coord.x ||
+          !coord.y ||
+          !coord.address ||
+          isNaN(coord.address) ||
+          coord.address === ""
       )
     ) {
-      setError("Please fill in all fields correctly.");
+      setError(
+        "Please fill in all fields correctly. Address must be a non-empty numeric value."
+      );
       return;
     }
 
@@ -82,7 +93,12 @@ const RoomDetails = ({ selectedRoom }) => {
         onSave={handleSave}
       />
       <Box
-        sx={{ display: "flex", justifyContent: "space-between", gap: "40px" }}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: "40px",
+          alignItems: "flex-start",
+        }}
       >
         <Box sx={{ flex: 1 }}>
           <RoomCoordinates
@@ -90,11 +106,18 @@ const RoomDetails = ({ selectedRoom }) => {
             onCoordinateChange={handleCoordinateChange}
           />
         </Box>
-        <Box sx={{ flex: 1 }}>
+        <Box
+          sx={{
+            flex: 1,
+            width: imgDimensions.width,
+            height: imgDimensions.height,
+          }}
+        >
           <RoomImageUpload
             imageSrc={imageSrc}
             coordinates={coordinates}
             onImageClick={handleImageClick}
+            onImageLoad={handleImageLoad}
           />
         </Box>
       </Box>
