@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useState, useEffect, useCallback } from "react";
 
 const RoomImageUpload = ({
@@ -46,7 +46,7 @@ const RoomImageUpload = ({
         height: imgDimensions.height,
       }}
     >
-      {imageSrc ? (
+      {imageSrc && (
         <img
           src={imageSrc}
           alt="Uploaded Room Plan"
@@ -54,10 +54,6 @@ const RoomImageUpload = ({
           onClick={handleImageClick}
           onLoad={handleImageLoad}
         />
-      ) : (
-        <Typography variant="body1" color="textSecondary">
-          No Image Uploaded
-        </Typography>
       )}
       {coordinates.map((coord, index) => (
         <Box

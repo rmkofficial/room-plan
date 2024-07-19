@@ -1,15 +1,16 @@
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Box, Snackbar, Alert } from "@mui/material";
 import RoomDetailsHeader from "./RoomDetailsHeader";
 import RoomCoordinates from "./RoomCoordinates";
 import RoomImageUpload from "./RoomImageUpload";
 
-const RoomDetails = ({ selectedRoom }) => {
+const RoomDetails = ({ selectedRoom, block, floor }) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [coordinates, setCoordinates] = useState([]);
   const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
   const [error, setError] = useState(null);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     setImageSrc(null);
@@ -19,7 +20,7 @@ const RoomDetails = ({ selectedRoom }) => {
 
   const handleImageUpload = (src) => {
     setImageSrc(src);
-    setCoordinates([]); 
+    setCoordinates([]);
     setImgDimensions({ width: 0, height: 0 });
   };
 
@@ -73,16 +74,27 @@ const RoomDetails = ({ selectedRoom }) => {
       return;
     }
 
-    const data = {
-      room: selectedRoom,
-      coordinates: coordinates.map((coord) => ({
-        x: coord.x,
-        y: coord.y,
-        address: coord.address,
-      })),
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.src = imageSrc;
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      coordinates.forEach((coord) => {
+        ctx.fillStyle = coord.color;
+        ctx.beginPath();
+        ctx.arc(coord.x, coord.y, 5, 0, 2 * Math.PI);
+        ctx.fill();
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.download = `blok_${block}_kat_${floor}_oda_${selectedRoom}.png`;
+      link.href = dataUrl;
+      link.click();
     };
 
-    console.log(JSON.stringify(data, null, 2));
     setError(null);
   };
 
@@ -104,11 +116,12 @@ const RoomDetails = ({ selectedRoom }) => {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          gap: "40px",
+          gap: "20px",
           alignItems: "flex-start",
         }}
       >
-        <Box sx={{ flex: 1 }}>
+        <Box sx={{ width: "400px", paddingRight: 10 }}>
+          {" "}
           <RoomCoordinates
             coordinates={coordinates}
             onCoordinateChange={handleCoordinateChange}
@@ -116,18 +129,21 @@ const RoomDetails = ({ selectedRoom }) => {
         </Box>
         <Box
           sx={{
-            flex: 1,
+            flexGrow: 1,
             overflow: "hidden",
-            height: imgDimensions.height,
+            padding: "10px",
             width: imgDimensions.width,
+            height: imgDimensions.height,
           }}
         >
+          {" "}
           <RoomImageUpload
             imageSrc={imageSrc}
             coordinates={coordinates}
             onImageClick={handleImageClick}
             onImageLoad={handleImageLoad}
           />
+          <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </Box>
       </Box>
       <Snackbar
@@ -150,6 +166,8 @@ const RoomDetails = ({ selectedRoom }) => {
 
 RoomDetails.propTypes = {
   selectedRoom: PropTypes.string.isRequired,
+  block: PropTypes.string.isRequired,
+  floor: PropTypes.string.isRequired,
 };
 
 export default RoomDetails;

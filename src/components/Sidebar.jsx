@@ -32,7 +32,7 @@ const Sidebar = ({ onRoomSelect }) => {
 
   const handleRoomClick = (room) => {
     setSelectedRoom(room);
-    onRoomSelect(room);
+    onRoomSelect(selectedBlock, selectedFloor, room);
   };
 
   const blocks = Object.keys(categoryNamesBlokKatMap);

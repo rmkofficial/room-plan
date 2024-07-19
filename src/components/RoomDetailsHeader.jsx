@@ -25,7 +25,7 @@ const RoomDetailsHeader = ({ selectedRoom, onImageUpload, onSave }) => {
   return (
     <Box
       sx={{
-        width: "100%",
+        width: "98%",
         padding: "10px",
         border: "1px solid #ccc",
         marginBottom: "10px",

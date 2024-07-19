@@ -1,10 +1,18 @@
-import React from "react";
+import { useState } from "react";
 import { Box } from "@mui/material";
 import RoomDetails from "./components/RoomDetails";
-import Sidebar from "./components/Sidebar"; // Sidebar'ı ekleyelim
+import Sidebar from "./components/Sidebar";
 
 const App = () => {
-  const [selectedRoom, setSelectedRoom] = React.useState(null);
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [selectedBlock, setSelectedBlock] = useState("");
+  const [selectedFloor, setSelectedFloor] = useState("");
+
+  const handleRoomSelect = (block, floor, room) => {
+    setSelectedBlock(block);
+    setSelectedFloor(floor);
+    setSelectedRoom(room);
+  };
 
   return (
     <Box
@@ -17,8 +25,14 @@ const App = () => {
         overflowY: "auto",
       }}
     >
-      <Sidebar onRoomSelect={setSelectedRoom} />
-      {selectedRoom && <RoomDetails selectedRoom={selectedRoom} />}
+      <Sidebar onRoomSelect={handleRoomSelect} />
+      {selectedRoom && (
+        <RoomDetails
+          selectedRoom={selectedRoom}
+          block={selectedBlock}
+          floor={selectedFloor}
+        />
+      )}
     </Box>
   );
 };
