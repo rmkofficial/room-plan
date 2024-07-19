@@ -52,6 +52,10 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
     });
   };
 
+  const handleCoordinateDelete = (index) => {
+    setCoordinates((prevCoords) => prevCoords.filter((_, i) => i !== index));
+  };
+
   const handlePointSelect = (index) => {
     setSelectedPointIndex(index);
   };
@@ -125,6 +129,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
           <RoomCoordinates
             coordinates={currentCoordinates}
             onCoordinateChange={handleCoordinateChange}
+            onCoordinateDelete={handleCoordinateDelete}
             selectedPointIndex={selectedPointIndex}
             onRowClick={handlePointSelect}
           />

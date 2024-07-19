@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
-import { Box, Typography, TextField } from "@mui/material";
+import { Box, Typography, TextField, Button } from "@mui/material";
 
 const RoomCoordinates = ({
   coordinates,
   onCoordinateChange,
+  onCoordinateDelete,
   selectedPointIndex,
   onRowClick,
 }) => {
@@ -40,7 +41,7 @@ const RoomCoordinates = ({
             onChange={(e) => onCoordinateChange(index, "x", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "30%", margin: "2px" }}
+            sx={{ width: "20%", margin: "2px" }}
             InputProps={{ style: { fontSize: 12 } }}
           />
           <TextField
@@ -48,7 +49,7 @@ const RoomCoordinates = ({
             onChange={(e) => onCoordinateChange(index, "y", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "30%", margin: "2px" }}
+            sx={{ width: "20%", margin: "2px" }}
             InputProps={{ style: { fontSize: 12 } }}
           />
           <TextField
@@ -58,9 +59,20 @@ const RoomCoordinates = ({
             }
             variant="outlined"
             size="small"
-            sx={{ width: "30%", margin: "2px" }}
+            sx={{ width: "20%", margin: "2px" }}
             InputProps={{ style: { fontSize: 12 } }}
           />
+          <Button
+            variant="contained"
+            color="error"
+            onClick={(e) => {
+              e.stopPropagation();
+              onCoordinateDelete(index);
+            }}
+            sx={{ margin: "2px" }}
+          >
+            Delete
+          </Button>
         </Box>
       ))}
     </Box>
@@ -77,6 +89,7 @@ RoomCoordinates.propTypes = {
     })
   ).isRequired,
   onCoordinateChange: PropTypes.func.isRequired,
+  onCoordinateDelete: PropTypes.func.isRequired,
   selectedPointIndex: PropTypes.number,
   onRowClick: PropTypes.func.isRequired,
 };
