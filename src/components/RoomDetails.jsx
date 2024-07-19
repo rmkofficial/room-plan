@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Snackbar, Alert } from "@mui/material";
 import RoomDetailsHeader from "./RoomDetailsHeader";
 import RoomCoordinates from "./RoomCoordinates";
@@ -11,8 +11,16 @@ const RoomDetails = ({ selectedRoom }) => {
   const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    setImageSrc(null);
+    setCoordinates([]);
+    setImgDimensions({ width: 0, height: 0 });
+  }, [selectedRoom]);
+
   const handleImageUpload = (src) => {
     setImageSrc(src);
+    setCoordinates([]); 
+    setImgDimensions({ width: 0, height: 0 });
   };
 
   const handleImageClick = (x, y) => {
@@ -109,8 +117,9 @@ const RoomDetails = ({ selectedRoom }) => {
         <Box
           sx={{
             flex: 1,
-            width: imgDimensions.width,
+            overflow: "hidden",
             height: imgDimensions.height,
+            width: imgDimensions.width,
           }}
         >
           <RoomImageUpload
@@ -125,6 +134,7 @@ const RoomDetails = ({ selectedRoom }) => {
         open={!!error}
         autoHideDuration={6000}
         onClose={() => setError(null)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert
           onClose={() => setError(null)}

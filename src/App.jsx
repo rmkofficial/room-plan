@@ -1,28 +1,24 @@
-import { useState } from "react";
+import React from "react";
 import { Box } from "@mui/material";
-import Sidebar from "./components/Sidebar";
 import RoomDetails from "./components/RoomDetails";
+import Sidebar from "./components/Sidebar"; // Sidebar'ı ekleyelim
 
 const App = () => {
-  const [selectedRoom, setSelectedRoom] = useState("");
-
-  const handleRoomSelect = (room) => {
-    setSelectedRoom(room);
-  };
+  const [selectedRoom, setSelectedRoom] = React.useState(null);
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
-      <Sidebar onRoomSelect={handleRoomSelect} />
-      <Box
-        sx={{
-          flexGrow: 1,
-          padding: "10px",
-          border: "1px solid #ccc",
-          overflow: "hidden",
-        }}
-      >
-        {selectedRoom && <RoomDetails selectedRoom={selectedRoom} />}
-      </Box>
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        minHeight: "100vh",
+        padding: "20px",
+        boxSizing: "border-box",
+        overflowY: "auto",
+      }}
+    >
+      <Sidebar onRoomSelect={setSelectedRoom} />
+      {selectedRoom && <RoomDetails selectedRoom={selectedRoom} />}
     </Box>
   );
 };
