@@ -11,7 +11,12 @@ import {
 } from "@mui/material";
 import { green } from "@mui/material/colors";
 
-const RoomDetailsHeader = ({ selectedRoom, onImageUpload, onSave }) => {
+const RoomDetailsHeader = ({
+  selectedRoom,
+  onImageUpload,
+  onSave,
+  onTxtUpload,
+}) => {
   const [inputKey, setInputKey] = useState(Date.now());
 
   const handleImageUpload = (event) => {
@@ -23,6 +28,18 @@ const RoomDetailsHeader = ({ selectedRoom, onImageUpload, onSave }) => {
         setInputKey(Date.now());
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleTxtUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target.result;
+        onTxtUpload(text);
+      };
+      reader.readAsText(file);
     }
   };
 
@@ -64,7 +81,7 @@ const RoomDetailsHeader = ({ selectedRoom, onImageUpload, onSave }) => {
           sx={{ flexShrink: 0, width: "250px" }}
         >
           Upload Room Plan (TXT)
-          <input type="file" hidden accept=".txt" />
+          <input type="file" hidden accept=".txt" onChange={handleTxtUpload} />
         </Button>
         <FormControl sx={{ flexShrink: 0, width: "250px" }}>
           <InputLabel id="copy-room-plan-label">Copy Room Plan</InputLabel>
@@ -103,6 +120,7 @@ RoomDetailsHeader.propTypes = {
   selectedRoom: PropTypes.string.isRequired,
   onImageUpload: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  onTxtUpload: PropTypes.func.isRequired,
 };
 
 export default RoomDetailsHeader;

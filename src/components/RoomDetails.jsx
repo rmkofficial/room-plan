@@ -41,6 +41,22 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
     setRoomImageMap(updatedRoomImageMap);
   };
 
+  const handleTxtUpload = (text) => {
+    const lines = text.split("\n");
+    const newCoordinates = lines.map((line) => {
+      const [x, y, address] = line
+        .split(",")
+        .map((item) => item.trim().split(":")[1].trim());
+      return {
+        x: parseFloat(x),
+        y: parseFloat(y),
+        address,
+        color: "red",
+      };
+    });
+    setCoordinates(newCoordinates);
+  };
+
   const handleImageClick = (x, y) => {
     const color = "red";
     const roundedX = parseFloat(x.toFixed(2));
@@ -155,6 +171,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
         selectedRoom={selectedRoom}
         onImageUpload={handleImageUpload}
         onSave={handleSave}
+        onTxtUpload={handleTxtUpload}
       />
       <Box
         sx={{
