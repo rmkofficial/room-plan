@@ -17,14 +17,22 @@ import { categoryNamesBlokKatMap } from "../data";
 const Sidebar = ({ onRoomSelect }) => {
   const [selectedBlock, setSelectedBlock] = useState("");
   const [selectedFloor, setSelectedFloor] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState("");
 
   const handleBlockChange = (event) => {
     setSelectedBlock(event.target.value);
-    setSelectedFloor(""); 
+    setSelectedFloor("");
+    setSelectedRoom("");
   };
 
   const handleFloorChange = (event) => {
     setSelectedFloor(event.target.value);
+    setSelectedRoom("");
+  };
+
+  const handleRoomClick = (room) => {
+    setSelectedRoom(room);
+    onRoomSelect(room);
   };
 
   const blocks = Object.keys(categoryNamesBlokKatMap);
@@ -59,9 +67,6 @@ const Sidebar = ({ onRoomSelect }) => {
             value={selectedBlock}
             onChange={handleBlockChange}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
             {blocks.map((block) => (
               <MenuItem key={block} value={block}>
                 {block}
@@ -77,9 +82,6 @@ const Sidebar = ({ onRoomSelect }) => {
             value={selectedFloor}
             onChange={handleFloorChange}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
             {floors.map((floor) => (
               <MenuItem key={floor} value={floor}>
                 {floor}
@@ -95,16 +97,18 @@ const Sidebar = ({ onRoomSelect }) => {
             {rooms.map((room) => (
               <ListItem
                 key={room}
-                sx={{ "&:hover": { backgroundColor: "#f5f5f5" } }}
+                sx={{
+                  "&:hover": { backgroundColor: "#f5f5f5" },
+                  backgroundColor:
+                    selectedRoom === room ? "lightblue" : "transparent",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleRoomClick(room)}
               >
                 <ListItemIcon>
                   <Checkbox edge="start" />
                 </ListItemIcon>
-                <ListItemText
-                  primary={room}
-                  sx={{ cursor: "pointer" }}
-                  onClick={() => onRoomSelect(room)}
-                />
+                <ListItemText primary={room} sx={{ cursor: "pointer" }} />
               </ListItem>
             ))}
           </List>
