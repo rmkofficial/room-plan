@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FormControl,
   InputLabel,
@@ -19,15 +19,32 @@ const Sidebar = ({ onRoomSelect }) => {
   const [selectedFloor, setSelectedFloor] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
 
+  useEffect(() => {
+    const initialBlock = Object.keys(categoryNamesBlokKatMap)[0];
+    const initialFloor = Object.keys(categoryNamesBlokKatMap[initialBlock])[0];
+    const initialRoom = categoryNamesBlokKatMap[initialBlock][initialFloor][0];
+    setSelectedBlock(initialBlock);
+    setSelectedFloor(initialFloor);
+    setSelectedRoom(initialRoom);
+    onRoomSelect(initialBlock, initialFloor, initialRoom);
+  }, []);
+
   const handleBlockChange = (event) => {
-    setSelectedBlock(event.target.value);
-    setSelectedFloor("");
-    setSelectedRoom("");
+    const newBlock = event.target.value;
+    const newFloor = Object.keys(categoryNamesBlokKatMap[newBlock])[0];
+    const newRoom = categoryNamesBlokKatMap[newBlock][newFloor][0];
+    setSelectedBlock(newBlock);
+    setSelectedFloor(newFloor);
+    setSelectedRoom(newRoom);
+    onRoomSelect(newBlock, newFloor, newRoom);
   };
 
   const handleFloorChange = (event) => {
-    setSelectedFloor(event.target.value);
-    setSelectedRoom("");
+    const newFloor = event.target.value;
+    const newRoom = categoryNamesBlokKatMap[selectedBlock][newFloor][0];
+    setSelectedFloor(newFloor);
+    setSelectedRoom(newRoom);
+    onRoomSelect(selectedBlock, newFloor, newRoom);
   };
 
   const handleRoomClick = (room) => {
@@ -102,7 +119,7 @@ const Sidebar = ({ onRoomSelect }) => {
                 onClick={() => handleRoomClick(room)}
               >
                 <ListItemIcon>
-                  <Checkbox edge="start" />
+                  <Checkbox edge="start" checked={selectedRoom === room} />
                 </ListItemIcon>
                 <ListItemText primary={room} sx={{ cursor: "pointer" }} />
               </ListItem>
