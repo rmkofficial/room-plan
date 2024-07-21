@@ -8,6 +8,7 @@ const RoomImageUpload = ({
   onImageClick,
   onImageLoad,
   onPointClick,
+  selectedPointIndex,
 }) => {
   const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
 
@@ -69,6 +70,7 @@ const RoomImageUpload = ({
             borderRadius: "50%",
             transform: "translate(-50%, -50%)",
             cursor: "pointer",
+            border: selectedPointIndex === index ? "2px solid blue" : "none",
           }}
           onClick={() => onPointClick(index)}
         />
@@ -90,6 +92,7 @@ RoomImageUpload.propTypes = {
   onImageClick: PropTypes.func.isRequired,
   onImageLoad: PropTypes.func.isRequired,
   onPointClick: PropTypes.func.isRequired,
+  selectedPointIndex: PropTypes.number,
 };
 
 export default RoomImageUpload;

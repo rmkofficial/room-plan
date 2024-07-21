@@ -230,6 +230,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
             onImageClick={handleImageClick}
             onImageLoad={handleImageLoad}
             onPointClick={handlePointSelect}
+            selectedPointIndex={selectedPointIndex}
           />
           <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </Box>
