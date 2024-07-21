@@ -12,7 +12,7 @@ import {
 import { green } from "@mui/material/colors";
 
 const RoomDetailsHeader = ({
-  selectedRoom,
+  uniqueRoomId,
   onImageUpload,
   onSave,
   onTxtUpload,
@@ -60,7 +60,7 @@ const RoomDetailsHeader = ({
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h6">{selectedRoom}</Typography>
+        <Typography variant="h6">{uniqueRoomId}</Typography>
         <Button
           variant="contained"
           component="label"
@@ -117,7 +117,7 @@ const RoomDetailsHeader = ({
 };
 
 RoomDetailsHeader.propTypes = {
-  selectedRoom: PropTypes.string.isRequired,
+  uniqueRoomId: PropTypes.string.isRequired,
   onImageUpload: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onTxtUpload: PropTypes.func.isRequired,

@@ -9,9 +9,10 @@ const App = () => {
   const [selectedFloor, setSelectedFloor] = useState("");
 
   const handleRoomSelect = (block, floor, room) => {
+    const uniqueRoomId = `${block}-${floor}-${room}`;
     setSelectedBlock(block);
     setSelectedFloor(floor);
-    setSelectedRoom(room);
+    setSelectedRoom(uniqueRoomId);
   };
 
   return (
@@ -28,7 +29,7 @@ const App = () => {
       <Sidebar onRoomSelect={handleRoomSelect} />
       {selectedRoom && (
         <RoomDetails
-          selectedRoom={selectedRoom}
+          uniqueRoomId={selectedRoom}
           block={selectedBlock}
           floor={selectedFloor}
         />

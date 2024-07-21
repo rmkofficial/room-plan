@@ -23,9 +23,10 @@ const Sidebar = ({ onRoomSelect }) => {
     const initialBlock = Object.keys(categoryNamesBlokKatMap)[0];
     const initialFloor = Object.keys(categoryNamesBlokKatMap[initialBlock])[0];
     const initialRoom = categoryNamesBlokKatMap[initialBlock][initialFloor][0];
+    const initialUniqueRoomId = `${initialBlock}-${initialFloor}-${initialRoom}`;
     setSelectedBlock(initialBlock);
     setSelectedFloor(initialFloor);
-    setSelectedRoom(initialRoom);
+    setSelectedRoom(initialUniqueRoomId);
     onRoomSelect(initialBlock, initialFloor, initialRoom);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -34,22 +35,25 @@ const Sidebar = ({ onRoomSelect }) => {
     const newBlock = event.target.value;
     const newFloor = Object.keys(categoryNamesBlokKatMap[newBlock])[0];
     const newRoom = categoryNamesBlokKatMap[newBlock][newFloor][0];
+    const newUniqueRoomId = `${newBlock}-${newFloor}-${newRoom}`;
     setSelectedBlock(newBlock);
     setSelectedFloor(newFloor);
-    setSelectedRoom(newRoom);
+    setSelectedRoom(newUniqueRoomId);
     onRoomSelect(newBlock, newFloor, newRoom);
   };
 
   const handleFloorChange = (event) => {
     const newFloor = event.target.value;
     const newRoom = categoryNamesBlokKatMap[selectedBlock][newFloor][0];
+    const newUniqueRoomId = `${selectedBlock}-${newFloor}-${newRoom}`;
     setSelectedFloor(newFloor);
-    setSelectedRoom(newRoom);
+    setSelectedRoom(newUniqueRoomId);
     onRoomSelect(selectedBlock, newFloor, newRoom);
   };
 
   const handleRoomClick = (room) => {
-    setSelectedRoom(room);
+    const uniqueRoomId = `${selectedBlock}-${selectedFloor}-${room}`;
+    setSelectedRoom(uniqueRoomId);
     onRoomSelect(selectedBlock, selectedFloor, room);
   };
 
@@ -114,13 +118,21 @@ const Sidebar = ({ onRoomSelect }) => {
                 sx={{
                   "&:hover": { backgroundColor: "#f5f5f5" },
                   backgroundColor:
-                    selectedRoom === room ? "lightblue" : "transparent",
+                    selectedRoom === `${selectedBlock}-${selectedFloor}-${room}`
+                      ? "lightblue"
+                      : "transparent",
                   cursor: "pointer",
                 }}
                 onClick={() => handleRoomClick(room)}
               >
                 <ListItemIcon>
-                  <Checkbox edge="start" checked={selectedRoom === room} />
+                  <Checkbox
+                    edge="start"
+                    checked={
+                      selectedRoom ===
+                      `${selectedBlock}-${selectedFloor}-${room}`
+                    }
+                  />
                 </ListItemIcon>
                 <ListItemText primary={room} sx={{ cursor: "pointer" }} />
               </ListItem>

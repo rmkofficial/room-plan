@@ -5,7 +5,7 @@ import RoomDetailsHeader from "./RoomDetailsHeader";
 import RoomCoordinates from "./RoomCoordinates";
 import RoomImageUpload from "./RoomImageUpload";
 
-const RoomDetails = ({ selectedRoom, block, floor }) => {
+const RoomDetails = ({ uniqueRoomId, block, floor }) => {
   const [roomImageMap, setRoomImageMap] = useState({});
   const [coordinates, setCoordinates] = useState([]);
   const [selectedPointIndex, setSelectedPointIndex] = useState(null);
@@ -15,10 +15,10 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    if (roomImageMap[selectedRoom]) {
-      setCoordinates(roomImageMap[selectedRoom].coordinates);
-      setImgDimensions(roomImageMap[selectedRoom].imgDimensions);
-      setCurrentPage(roomImageMap[selectedRoom].currentPage);
+    if (roomImageMap[uniqueRoomId]) {
+      setCoordinates(roomImageMap[uniqueRoomId].coordinates);
+      setImgDimensions(roomImageMap[uniqueRoomId].imgDimensions);
+      setCurrentPage(roomImageMap[uniqueRoomId].currentPage);
       setSelectedPointIndex(null);
     } else {
       setCoordinates([]);
@@ -26,12 +26,12 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
       setCurrentPage(1);
       setSelectedPointIndex(null);
     }
-  }, [selectedRoom, roomImageMap]);
+  }, [uniqueRoomId, roomImageMap]);
 
   const handleImageUpload = (src) => {
     const updatedRoomImageMap = {
       ...roomImageMap,
-      [selectedRoom]: {
+      [uniqueRoomId]: {
         imageSrc: src,
         coordinates: [],
         imgDimensions: { width: 0, height: 0 },
@@ -90,7 +90,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
 
   const handleSave = () => {
     if (
-      !selectedRoom ||
+      !uniqueRoomId ||
       coordinates.some(
         (coord) =>
           !coord.x ||
@@ -109,7 +109,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const img = new Image();
-    img.src = roomImageMap[selectedRoom].imageSrc;
+    img.src = roomImageMap[uniqueRoomId].imageSrc;
     img.onload = () => {
       canvas.width = img.width;
       canvas.height = img.height;
@@ -117,7 +117,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
 
       const dataUrl = canvas.toDataURL("image/png");
       const link = document.createElement("a");
-      link.download = `blok_${block}_kat_${floor}_oda_${selectedRoom}.png`;
+      link.download = `blok_${block}_kat_${floor}_oda_${uniqueRoomId}.png`;
       link.href = dataUrl;
       link.click();
 
@@ -131,7 +131,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
       const txtBlob = new Blob([coordinatesText], { type: "text/plain" });
       const txtUrl = URL.createObjectURL(txtBlob);
       const txtLink = document.createElement("a");
-      txtLink.download = `blok_${block}_kat_${floor}_oda_${selectedRoom}.txt`;
+      txtLink.download = `blok_${block}_kat_${floor}_oda_${uniqueRoomId}.txt`;
       txtLink.href = txtUrl;
       txtLink.click();
       URL.revokeObjectURL(txtUrl);
@@ -139,8 +139,8 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
 
     const updatedRoomImageMap = {
       ...roomImageMap,
-      [selectedRoom]: {
-        ...roomImageMap[selectedRoom],
+      [uniqueRoomId]: {
+        ...roomImageMap[uniqueRoomId],
         coordinates,
         imgDimensions,
         currentPage,
@@ -168,7 +168,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
       }}
     >
       <RoomDetailsHeader
-        selectedRoom={selectedRoom}
+        selectedRoom={uniqueRoomId}
         onImageUpload={handleImageUpload}
         onSave={handleSave}
         onTxtUpload={handleTxtUpload}
@@ -225,7 +225,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
           }}
         >
           <RoomImageUpload
-            imageSrc={roomImageMap[selectedRoom]?.imageSrc}
+            imageSrc={roomImageMap[uniqueRoomId]?.imageSrc}
             coordinates={coordinates}
             onImageClick={handleImageClick}
             onImageLoad={handleImageLoad}
@@ -254,7 +254,7 @@ const RoomDetails = ({ selectedRoom, block, floor }) => {
 };
 
 RoomDetails.propTypes = {
-  selectedRoom: PropTypes.string.isRequired,
+  uniqueRoomId: PropTypes.string.isRequired,
   block: PropTypes.string.isRequired,
   floor: PropTypes.string.isRequired,
 };
