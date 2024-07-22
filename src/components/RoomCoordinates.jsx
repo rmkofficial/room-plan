@@ -17,18 +17,19 @@ const RoomCoordinates = ({
           padding: "5px",
           backgroundColor: "#f5f5f5",
           fontWeight: "bold",
+          width: "100%",
         }}
       >
-        <Typography sx={{ width: "20%", textAlign: "center" }}>
+        <Typography sx={{ width: "%", textAlign: "center" }}>
           Koordinat X
         </Typography>
-        <Typography sx={{ width: "20%", textAlign: "center" }}>
+        <Typography sx={{ width: "%", textAlign: "center" }}>
           Koordinat Y
         </Typography>
-        <Typography sx={{ width: "20%", textAlign: "center" }}>
+        <Typography sx={{ width: "%", textAlign: "center" }}>
           Address
         </Typography>
-        <Typography sx={{ width: "20%", textAlign: "center" }}></Typography>
+        <Typography sx={{ width: "%", textAlign: "center" }}></Typography>
       </Box>
       {coordinates.map((coord, index) => (
         <Box

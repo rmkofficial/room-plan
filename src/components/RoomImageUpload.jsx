@@ -40,7 +40,6 @@ const RoomImageUpload = ({
     <Box
       sx={{
         position: "relative",
-        border: "1px solid #ccc",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
