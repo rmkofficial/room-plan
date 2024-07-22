@@ -61,42 +61,57 @@ const RoomDetailsHeader = ({
         }}
       >
         <Typography variant="h6">{uniqueRoomId}</Typography>
-        <Button
-          variant="contained"
-          component="label"
-          sx={{ flexShrink: 0, width: "250px" }}
+        <Box
+          sx={{
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            flexGrow: 1,
+          }}
         >
-          Upload Room Plan (PNG)
-          <input
-            key={inputKey}
-            type="file"
-            hidden
-            accept=".png"
-            onChange={handleImageUpload}
-          />
-        </Button>
-        <Button
-          variant="contained"
-          component="label"
-          sx={{ flexShrink: 0, width: "250px" }}
-        >
-          Upload Room Plan (TXT)
-          <input type="file" hidden accept=".txt" onChange={handleTxtUpload} />
-        </Button>
-        <FormControl sx={{ flexShrink: 0, width: "250px" }}>
-          <InputLabel id="copy-room-plan-label">Copy Room Plan</InputLabel>
-          <Select
-            labelId="copy-room-plan-label"
-            id="copy-room-plan"
-            value=""
-            onChange={() => {}}
+          <Button
+            variant="contained"
+            component="label"
+            sx={{ flexShrink: 0, width: "250px", height: "50px" }}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {/* Dropdown seçenekleri buraya eklenebilir */}
-          </Select>
-        </FormControl>
+            Oda Planı Yükle
+            <input
+              key={inputKey}
+              type="file"
+              hidden
+              accept=".png"
+              onChange={handleImageUpload}
+            />
+          </Button>
+          <Button
+            variant="contained"
+            component="label"
+            sx={{ flexShrink: 0, width: "250px", height: "50px" }}
+          >
+            Cihaz Yerleşimi Yükle
+            <input
+              type="file"
+              hidden
+              accept=".txt"
+              onChange={handleTxtUpload}
+            />
+          </Button>
+          <FormControl sx={{ flexShrink: 0, width: "250px", height: "50px" }}>
+            <InputLabel id="copy-room-plan-label">Copy Room Plan</InputLabel>
+            <Select
+              labelId="copy-room-plan-label"
+              id="copy-room-plan"
+              value=""
+              onChange={() => {}}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {/* Dropdown seçenekleri buraya eklenebilir */}
+            </Select>
+          </FormControl>
+        </Box>
         <Button
           variant="contained"
           sx={{
@@ -104,6 +119,7 @@ const RoomDetailsHeader = ({
             color: "white",
             flexShrink: 0,
             width: "100px",
+            height: "50px",
             marginRight: "30px",
             "&:hover": { backgroundColor: green[700] },
           }}
