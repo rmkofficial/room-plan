@@ -13,7 +13,7 @@ const RoomCoordinates = ({
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr) 1.5fr 2fr 80px",
+          gridTemplateColumns: "repeat(4, 1fr) 1.5fr 2fr 80px", 
           padding: "5px",
           backgroundColor: "#f5f5f5",
           fontWeight: "bold",
@@ -42,51 +42,51 @@ const RoomCoordinates = ({
               selectedPointIndex === index ? "lightblue" : "transparent",
             cursor: "pointer",
             alignItems: "center", 
-            gap: "10px",
+            gap: "10px", 
           }}
         >
           <TextField
-            value={coord.x1}
+            value={coord.x1 !== null ? coord.x1 : ""}
             onChange={(e) => onCoordinateChange(index, "x1", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "100%",  }}
+            sx={{ width: "100%" }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
-            value={coord.y1}
+            value={coord.y1 !== null ? coord.y1 : ""}
             onChange={(e) => onCoordinateChange(index, "y1", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "100%",  }}
+            sx={{ width: "100%" }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
-            value={coord.x2}
+            value={coord.x2 !== null ? coord.x2 : ""}
             onChange={(e) => onCoordinateChange(index, "x2", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "100%",  }}
+            sx={{ width: "100%" }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
-            value={coord.y2}
+            value={coord.y2 !== null ? coord.y2 : ""}
             onChange={(e) => onCoordinateChange(index, "y2", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "100%",  }}
+            sx={{ width: "100%" }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
-            value={coord.type}
+            value={coord.type !== null ? coord.type : ""}
             onChange={(e) => onCoordinateChange(index, "type", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "100%",  }}
+            sx={{ width: "100%" }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
-            value={coord.address}
+            value={coord.address !== null ? coord.address : ""}
             onChange={(e) =>
               onCoordinateChange(index, "address", e.target.value)
             }
@@ -102,7 +102,7 @@ const RoomCoordinates = ({
               e.stopPropagation();
               onCoordinateDelete(index);
             }}
-            sx={{ width: "100%",  marginLeft: "3px" }}
+            sx={{ width: "100%", marginLeft: "3px" }}
           >
             Delete
           </Button>

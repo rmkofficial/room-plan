@@ -205,7 +205,6 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
       }}
     >
       <RoomDetailsHeader
-        selectedRoom={uniqueRoomId}
         onImageUpload={handleImageUpload}
         onSave={handleSave}
         onTxtUpload={handleTxtUpload}
@@ -270,7 +269,6 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
             onImageLoad={handleImageLoad}
             onPointClick={handlePointSelect}
             selectedPointIndex={selectedPointIndex}
-            drawMode={drawMode}
           />
           <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </Box>

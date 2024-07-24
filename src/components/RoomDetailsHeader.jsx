@@ -3,7 +3,6 @@ import { useState } from "react";
 import {
   Box,
   Button,
-  Typography,
   FormControl,
   InputLabel,
   Select,
@@ -14,7 +13,6 @@ import {
 import { green } from "@mui/material/colors";
 
 const RoomDetailsHeader = ({
-  uniqueRoomId,
   onImageUpload,
   onSave,
   onTxtUpload,
@@ -68,7 +66,6 @@ const RoomDetailsHeader = ({
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h6">{uniqueRoomId}</Typography>
         <Box
           sx={{
             display: "flex",
@@ -142,7 +139,7 @@ const RoomDetailsHeader = ({
           }}
           onClick={onSave}
         >
-          Save
+          Kaydet
         </Button>
       </Box>
     </Box>
@@ -150,7 +147,6 @@ const RoomDetailsHeader = ({
 };
 
 RoomDetailsHeader.propTypes = {
-  uniqueRoomId: PropTypes.string.isRequired,
   onImageUpload: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onTxtUpload: PropTypes.func.isRequired,
