@@ -12,35 +12,37 @@ const RoomCoordinates = ({
     <Box>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr) 1.5fr 2fr 80px",
           padding: "5px",
           backgroundColor: "#f5f5f5",
           fontWeight: "bold",
           width: "100%",
+          textAlign: "center",
+          gap: "10px", 
         }}
       >
-        <Typography sx={{ width: "14%", textAlign: "center" }}>X1</Typography>
-        <Typography sx={{ width: "14%", textAlign: "center" }}>Y1</Typography>
-        <Typography sx={{ width: "14%", textAlign: "center" }}>X2</Typography>
-        <Typography sx={{ width: "14%", textAlign: "center" }}>Y2</Typography>
-        <Typography sx={{ width: "14%", textAlign: "center" }}>Type</Typography>
-        <Typography sx={{ width: "14%", textAlign: "center" }}>
-          Address
-        </Typography>
-        <Typography sx={{ width: "14%", textAlign: "center" }}></Typography>
+        <Typography sx={{ borderRight: "1px solid #ccc" }}>X1</Typography>
+        <Typography sx={{ borderRight: "1px solid #ccc" }}>Y1</Typography>
+        <Typography sx={{ borderRight: "1px solid #ccc" }}>X2</Typography>
+        <Typography sx={{ borderRight: "1px solid #ccc" }}>Y2</Typography>
+        <Typography sx={{ borderRight: "1px solid #ccc" }}>Type</Typography>
+        <Typography sx={{ borderRight: "1px solid #ccc" }}>Address</Typography>
+        <Typography></Typography>
       </Box>
       {coordinates.map((coord, index) => (
         <Box
           key={index}
           onClick={() => onRowClick(index)}
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr) 1.5fr 2fr 80px", 
             padding: "5px",
             backgroundColor:
               selectedPointIndex === index ? "lightblue" : "transparent",
             cursor: "pointer",
+            alignItems: "center", 
+            gap: "10px",
           }}
         >
           <TextField
@@ -48,7 +50,7 @@ const RoomCoordinates = ({
             onChange={(e) => onCoordinateChange(index, "x1", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "14%", margin: "2px" }}
+            sx={{ width: "100%",  }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
@@ -56,7 +58,7 @@ const RoomCoordinates = ({
             onChange={(e) => onCoordinateChange(index, "y1", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "14%", margin: "2px" }}
+            sx={{ width: "100%",  }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
@@ -64,7 +66,7 @@ const RoomCoordinates = ({
             onChange={(e) => onCoordinateChange(index, "x2", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "14%", margin: "2px" }}
+            sx={{ width: "100%",  }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
@@ -72,7 +74,7 @@ const RoomCoordinates = ({
             onChange={(e) => onCoordinateChange(index, "y2", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "14%", margin: "2px" }}
+            sx={{ width: "100%",  }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
@@ -80,7 +82,7 @@ const RoomCoordinates = ({
             onChange={(e) => onCoordinateChange(index, "type", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "14%", margin: "2px" }}
+            sx={{ width: "100%",  }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
@@ -90,7 +92,7 @@ const RoomCoordinates = ({
             }
             variant="outlined"
             size="small"
-            sx={{ width: "14%", margin: "2px" }}
+            sx={{ width: "100%", marginLeft: "3px" }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <Button
@@ -100,7 +102,7 @@ const RoomCoordinates = ({
               e.stopPropagation();
               onCoordinateDelete(index);
             }}
-            sx={{ width: "14%", margin: "2px" }}
+            sx={{ width: "100%",  marginLeft: "3px" }}
           >
             Delete
           </Button>

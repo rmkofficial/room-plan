@@ -220,7 +220,7 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
           alignItems: "flex-start",
         }}
       >
-        <Box sx={{ width: "300px", padding: "10px", flexShrink: 0 }}>
+        <Box sx={{ width: "520px", padding: "10px", flexShrink: 0 }}>
           <RoomCoordinates
             coordinates={currentCoordinates}
             onCoordinateChange={handleCoordinateChange}
