@@ -57,47 +57,64 @@ const RoomImageUpload = ({
         />
       )}
       {coordinates.map((coord, index) => (
-        <Box
-          key={index}
-          sx={{
-            position: "absolute",
-            top: `${coord.y1}px`,
-            left: `${coord.x1}px`,
-            width: "10px",
-            height: "10px",
-            backgroundColor: "red",
-            borderRadius: "50%",
-            transform: "translate(-50%, -50%)",
-            cursor: "pointer",
-            border: selectedPointIndex === index ? "2px solid blue" : "none",
-          }}
-          onClick={() => onPointClick(index)}
-        />
-      ))}
-      {coordinates.map((coord, index) =>
-        coord.type === "line" ? (
+        <Box key={index}>
           <Box
-            key={`${index}-line`}
             sx={{
               position: "absolute",
               top: `${coord.y1}px`,
               left: `${coord.x1}px`,
-              width: `${Math.sqrt(
-                (coord.x2 - coord.x1) ** 2 + (coord.y2 - coord.y1) ** 2
-              )}px`,
-              height: "2px",
-              backgroundColor: "blue",
-              transformOrigin: "0 0",
-              transform: `rotate(${Math.atan2(
-                coord.y2 - coord.y1,
-                coord.x2 - coord.x1
-              )}rad)`,
+              width: "10px",
+              height: "10px",
+              backgroundColor: "red",
+              borderRadius: "50%",
+              transform: "translate(-50%, -50%)",
               cursor: "pointer",
-              zIndex: 1,
+              border: selectedPointIndex === index ? "2px solid blue" : "none",
             }}
+            onClick={() => onPointClick(index)}
           />
-        ) : null
-      )}
+          {coord.type === "line" && coord.x2 !== null && coord.y2 !== null && (
+            <Box>
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: `${coord.y2}px`,
+                  left: `${coord.x2}px`,
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: "red",
+                  borderRadius: "50%",
+                  transform: "translate(-50%, -50%)",
+                  cursor: "pointer",
+                  border:
+                    selectedPointIndex === index ? "2px solid blue" : "none",
+                }}
+                onClick={() => onPointClick(index)}
+              />
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: `${coord.y1}px`,
+                  left: `${coord.x1}px`,
+                  width: `${Math.sqrt(
+                    (coord.x2 - coord.x1) ** 2 + (coord.y2 - coord.y1) ** 2
+                  )}px`,
+                  height: "2px",
+                  backgroundColor: "blue",
+                  transformOrigin: "0 0",
+                  transform: `rotate(${Math.atan2(
+                    coord.y2 - coord.y1,
+                    coord.x2 - coord.x1
+                  )}rad)`,
+                  cursor: "pointer",
+                  zIndex: 1,
+                }}
+                onClick={() => onPointClick(index)}
+              />
+            </Box>
+          )}
+        </Box>
+      ))}
     </Box>
   );
 };
