@@ -12,7 +12,9 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
   const [imgDimensions, setImgDimensions] = useState({ width: 0, height: 0 });
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [drawMode, setDrawMode] = useState("point");
   const canvasRef = useRef(null);
+  const [lineStart, setLineStart] = useState(null);
 
   useEffect(() => {
     if (roomImageMap[uniqueRoomId]) {
@@ -44,12 +46,15 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
   const handleTxtUpload = (text) => {
     const lines = text.split("\n");
     const newCoordinates = lines.map((line) => {
-      const [x, y, address] = line
+      const [x1, y1, x2, y2, type, address] = line
         .split(",")
         .map((item) => item.trim().split(":")[1].trim());
       return {
-        x: parseFloat(x),
-        y: parseFloat(y),
+        x1: parseFloat(x1),
+        y1: parseFloat(y1),
+        x2: parseFloat(x2),
+        y2: parseFloat(y2),
+        type,
         address,
         color: "red",
       };
@@ -58,13 +63,40 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
   };
 
   const handleImageClick = (x, y) => {
-    const color = "red";
     const roundedX = parseFloat(x.toFixed(2));
     const roundedY = parseFloat(y.toFixed(2));
-    setCoordinates((prevCoords) => [
-      ...prevCoords,
-      { x: roundedX, y: roundedY, address: "", color },
-    ]);
+    if (drawMode === "point") {
+      setCoordinates((prevCoords) => [
+        ...prevCoords,
+        {
+          x1: roundedX,
+          y1: roundedY,
+          x2: null,
+          y2: null,
+          type: "point",
+          address: "",
+          color: "red",
+        },
+      ]);
+    } else if (drawMode === "line") {
+      if (lineStart) {
+        setCoordinates((prevCoords) => [
+          ...prevCoords,
+          {
+            x1: lineStart.x,
+            y1: lineStart.y,
+            x2: roundedX,
+            y2: roundedY,
+            type: "line",
+            address: "",
+            color: "red",
+          },
+        ]);
+        setLineStart(null);
+      } else {
+        setLineStart({ x: roundedX, y: roundedY });
+      }
+    }
   };
 
   const handleImageLoad = ({ width, height }) => {
@@ -75,7 +107,9 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
     setCoordinates((prevCoords) => {
       const newCoords = [...prevCoords];
       newCoords[index][field] =
-        field === "x" || field === "y" ? parseFloat(value) : value;
+        field === "x1" || field === "y1" || field === "x2" || field === "y2"
+          ? parseFloat(value)
+          : value;
       return newCoords;
     });
   };
@@ -93,8 +127,9 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
       !uniqueRoomId ||
       coordinates.some(
         (coord) =>
-          !coord.x ||
-          !coord.y ||
+          !coord.x1 ||
+          !coord.y1 ||
+          (coord.type === "line" && (!coord.x2 || !coord.y2)) ||
           !coord.address ||
           isNaN(coord.address) ||
           coord.address === ""
@@ -121,10 +156,12 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
       link.href = dataUrl;
       link.click();
 
-      // Koordinatları içeren bir txt dosyası oluştur
       const coordinatesText = coordinates
         .map(
-          (coord) => `X: ${coord.x}, Y: ${coord.y}, Address: ${coord.address}`
+          (coord) =>
+            `X1: ${coord.x1}, Y1: ${coord.y1}, X2: ${coord.x2 || ""}, Y2: ${
+              coord.y2 || ""
+            }, Type: ${coord.type}, Address: ${coord.address}`
         )
         .join("\n");
 
@@ -172,6 +209,8 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
         onImageUpload={handleImageUpload}
         onSave={handleSave}
         onTxtUpload={handleTxtUpload}
+        onDrawModeChange={setDrawMode}
+        drawMode={drawMode}
       />
       <Box
         sx={{
@@ -231,6 +270,7 @@ const RoomDetails = ({ uniqueRoomId, block, floor }) => {
             onImageLoad={handleImageLoad}
             onPointClick={handlePointSelect}
             selectedPointIndex={selectedPointIndex}
+            drawMode={drawMode}
           />
           <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
         </Box>

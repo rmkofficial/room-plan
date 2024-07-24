@@ -20,16 +20,15 @@ const RoomCoordinates = ({
           width: "100%",
         }}
       >
-        <Typography sx={{ width: "%", textAlign: "center" }}>
-          Koordinat X
-        </Typography>
-        <Typography sx={{ width: "%", textAlign: "center" }}>
-          Koordinat Y
-        </Typography>
-        <Typography sx={{ width: "%", textAlign: "center" }}>
+        <Typography sx={{ width: "14%", textAlign: "center" }}>X1</Typography>
+        <Typography sx={{ width: "14%", textAlign: "center" }}>Y1</Typography>
+        <Typography sx={{ width: "14%", textAlign: "center" }}>X2</Typography>
+        <Typography sx={{ width: "14%", textAlign: "center" }}>Y2</Typography>
+        <Typography sx={{ width: "14%", textAlign: "center" }}>Type</Typography>
+        <Typography sx={{ width: "14%", textAlign: "center" }}>
           Address
         </Typography>
-        <Typography sx={{ width: "%", textAlign: "center" }}></Typography>
+        <Typography sx={{ width: "14%", textAlign: "center" }}></Typography>
       </Box>
       {coordinates.map((coord, index) => (
         <Box
@@ -45,19 +44,43 @@ const RoomCoordinates = ({
           }}
         >
           <TextField
-            value={coord.x}
-            onChange={(e) => onCoordinateChange(index, "x", e.target.value)}
+            value={coord.x1}
+            onChange={(e) => onCoordinateChange(index, "x1", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "20%", margin: "2px" }}
+            sx={{ width: "14%", margin: "2px" }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
-            value={coord.y}
-            onChange={(e) => onCoordinateChange(index, "y", e.target.value)}
+            value={coord.y1}
+            onChange={(e) => onCoordinateChange(index, "y1", e.target.value)}
             variant="outlined"
             size="small"
-            sx={{ width: "20%", margin: "2px" }}
+            sx={{ width: "14%", margin: "2px" }}
+            InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
+          />
+          <TextField
+            value={coord.x2}
+            onChange={(e) => onCoordinateChange(index, "x2", e.target.value)}
+            variant="outlined"
+            size="small"
+            sx={{ width: "14%", margin: "2px" }}
+            InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
+          />
+          <TextField
+            value={coord.y2}
+            onChange={(e) => onCoordinateChange(index, "y2", e.target.value)}
+            variant="outlined"
+            size="small"
+            sx={{ width: "14%", margin: "2px" }}
+            InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
+          />
+          <TextField
+            value={coord.type}
+            onChange={(e) => onCoordinateChange(index, "type", e.target.value)}
+            variant="outlined"
+            size="small"
+            sx={{ width: "14%", margin: "2px" }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <TextField
@@ -67,7 +90,7 @@ const RoomCoordinates = ({
             }
             variant="outlined"
             size="small"
-            sx={{ width: "20%", margin: "2px" }}
+            sx={{ width: "14%", margin: "2px" }}
             InputProps={{ style: { fontSize: 12, textAlign: "center" } }}
           />
           <Button
@@ -77,7 +100,7 @@ const RoomCoordinates = ({
               e.stopPropagation();
               onCoordinateDelete(index);
             }}
-            sx={{ width: "20%", margin: "2px" }}
+            sx={{ width: "14%", margin: "2px" }}
           >
             Delete
           </Button>
@@ -90,8 +113,11 @@ const RoomCoordinates = ({
 RoomCoordinates.propTypes = {
   coordinates: PropTypes.arrayOf(
     PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired,
+      x1: PropTypes.number.isRequired,
+      y1: PropTypes.number.isRequired,
+      x2: PropTypes.number,
+      y2: PropTypes.number,
+      type: PropTypes.string.isRequired,
       address: PropTypes.string.isRequired,
       color: PropTypes.string.isRequired,
     })

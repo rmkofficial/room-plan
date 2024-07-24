@@ -61,8 +61,8 @@ const RoomImageUpload = ({
           key={index}
           sx={{
             position: "absolute",
-            top: `${coord.y}px`,
-            left: `${coord.x}px`,
+            top: `${coord.y1}px`,
+            left: `${coord.x1}px`,
             width: "10px",
             height: "10px",
             backgroundColor: "red",
@@ -74,6 +74,30 @@ const RoomImageUpload = ({
           onClick={() => onPointClick(index)}
         />
       ))}
+      {coordinates.map((coord, index) =>
+        coord.type === "line" ? (
+          <Box
+            key={`${index}-line`}
+            sx={{
+              position: "absolute",
+              top: `${coord.y1}px`,
+              left: `${coord.x1}px`,
+              width: `${Math.sqrt(
+                (coord.x2 - coord.x1) ** 2 + (coord.y2 - coord.y1) ** 2
+              )}px`,
+              height: "2px",
+              backgroundColor: "blue",
+              transformOrigin: "0 0",
+              transform: `rotate(${Math.atan2(
+                coord.y2 - coord.y1,
+                coord.x2 - coord.x1
+              )}rad)`,
+              cursor: "pointer",
+              zIndex: 1,
+            }}
+          />
+        ) : null
+      )}
     </Box>
   );
 };
@@ -82,8 +106,11 @@ RoomImageUpload.propTypes = {
   imageSrc: PropTypes.string,
   coordinates: PropTypes.arrayOf(
     PropTypes.shape({
-      x: PropTypes.number.isRequired,
-      y: PropTypes.number.isRequired,
+      x1: PropTypes.number.isRequired,
+      y1: PropTypes.number.isRequired,
+      x2: PropTypes.number,
+      y2: PropTypes.number,
+      type: PropTypes.string.isRequired,
       address: PropTypes.string.isRequired,
       color: PropTypes.string.isRequired,
     })

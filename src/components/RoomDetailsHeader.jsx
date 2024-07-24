@@ -8,6 +8,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { green } from "@mui/material/colors";
 
@@ -16,6 +18,8 @@ const RoomDetailsHeader = ({
   onImageUpload,
   onSave,
   onTxtUpload,
+  onDrawModeChange,
+  drawMode,
 }) => {
   const [inputKey, setInputKey] = useState(Date.now());
 
@@ -41,6 +45,10 @@ const RoomDetailsHeader = ({
       };
       reader.readAsText(file);
     }
+  };
+
+  const handleDrawModeChange = (event) => {
+    onDrawModeChange(event.target.checked ? "line" : "point");
   };
 
   return (
@@ -111,6 +119,15 @@ const RoomDetailsHeader = ({
               {/* Dropdown seçenekleri buraya eklenebilir */}
             </Select>
           </FormControl>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={drawMode === "line"}
+                onChange={handleDrawModeChange}
+              />
+            }
+            label="Çizgi Çiz"
+          />
         </Box>
         <Button
           variant="contained"
@@ -137,6 +154,8 @@ RoomDetailsHeader.propTypes = {
   onImageUpload: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
   onTxtUpload: PropTypes.func.isRequired,
+  onDrawModeChange: PropTypes.func.isRequired,
+  drawMode: PropTypes.string.isRequired,
 };
 
 export default RoomDetailsHeader;
